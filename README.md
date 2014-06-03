@@ -1,4 +1,4 @@
 app-em
 ======
 
-Gaussian Misture
+Gaussian Mixture
