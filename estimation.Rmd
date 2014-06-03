@@ -1,0 +1,33 @@
+<font size=3px>
+Now we'll fit the Gaussian mixture model for each variable, ``waiting`` and ``eruptions``. Assume that each variable set \\(\mathbf{x} = (\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_n)\\)
+ is a sample of \\(n\\) independent observations from a mixture two univariate normal distributions, and let \\(\mathbf{z} = (\mathbf{z}_1,\mathbf{z}_2,\ldots,\mathbf{z}_n)\\) be the latent variable that determine the component from which the observation originates.
+$$
+{X}_i|\left[\theta;{Z}_i=1 \right] \sim \mathcal{N}\left(\mu_1, \sigma_1\right) \text{ and } {X}_i|\left[\theta; {Z}_i=2\right] \sim \mathcal{N}\left(\mu_2, \sigma_2\right)
+$$
+where \\(\mathbb{P}({Z}_i=1)={\omega}_1\\) and \\(\mathbb{P}({Z}_i=2)={\omega}_2=1-{\omega}_1\\). The aim is to estimate the unknown parameters representing the "mixing" value between the Gaussian the means and variances of each:
+$$\theta=\left(\mu_1,\mu_2,\sigma_1,\sigma_2,\omega\right)$$.
+
+The ``mixtools`` package is one of several available in **[R](http://www.r-project.org/ "Title")** to fit mixture distributions. Using the function ``normalmixEM()`` for fitting normal mixture densities.
+
+```{r prompt=TRUE, comment="", highlight=TRUE, message=FALSE, eval=TRUE, results='hide'}
+library(mixtools)
+data(faithful)
+wait.mix <- normalmixEM(faithful$waiting)
+erup.mix <- normalmixEM(faithful$eruptions)
+```
+
+
+```{r , tidy=FALSE, comment=NA, echo=FALSE, message=FALSE, warning=FALSE, fig.width=12}
+w.df <- rbind('Mean' = wait.mix$mu, 'Std. Deviation' = wait.mix$sigma, 'Weight' = wait.mix$lambda)
+colnames(w.df) <- c("Waiting-1", "Waiting-2")
+e.df <- rbind('Mean' = erup.mix$mu, 'Std. Deviation' = erup.mix$sigma, 'Weight' = erup.mix$lambda)
+colnames(e.df) <- c("Eruption-1", "Eruption-2")
+cbind(w.df, e.df)
+```
+
+### Classification
+The problem of classification is to find how many groups exists and what group each observation belongs to. In this example is clear the there two groups. Therefore we used EM algorithm for fitting a mixture of two multivariate normal distributions, as showed in the animation below:
+
+
+
+</font>
